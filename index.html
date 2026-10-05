@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Referral Expert Hub</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #1e293b; margin: 0; padding: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { color: #0f172a; margin-bottom: 8px; }
+        p.subtitle { color: #64748b; font-size: 16px; }
+        .candidate-card { border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 16px; border-radius: 12px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .badge { font-size: 12px; font-weight: 600; background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 6px; }
+        .status { font-size: 12px; color: #16a34a; font-weight: 500; }
+        a.link { font-size: 14px; color: #2563eb; text-decoration: none; font-weight: 500; }
+        a.link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Remote Referral Expert Hub</h1>
+            <p class="subtitle">Live 24/7 Automated Autonomous Agent Referral Pipeline Feed</p>
+        </header>
+
+        <main>
+            <h2>Verified Candidates Feed</h2>
+            <div id="candidate-feed">
+                <p style="color: #64748b;">Loading live candidate referrals from edge database...</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    async function loadRemoteReferralFeed() {
+      try {
+        const response = await fetch('https://remote-referral-bot.alexispfirst-referral-bot.workers.dev/api/candidates');
+        const candidates = await response.json();
+        
+        const feedContainer = document.getElementById('candidate-feed');
+        if (!feedContainer) return;
+
+        if (!candidates || candidates.length === 0) {
+          feedContainer.innerHTML = "<p>No candidates processed yet. Trigger your Make.com pipeline to populate records!</p>";
+          return;
+        }
+
+        feedContainer.innerHTML = candidates.map(c => {
+          let skillsArray = [];
+          try {
+            skillsArray = JSON.parse(c.skills);
+          } catch (e) {
+            skillsArray = [c.skills];
+          }
+
+          return `
+            <div class="candidate-card">
+              <span class="badge">${c.region} - ${c.country}</span>
+              <h3 style="margin-top: 12px; margin-bottom: 8px; color: #0f172a;">${c.role_sought || 'Remote Role'}</h3>
+              <p style="font-size: 14px; color: #475569; margin: 4px 0;"><strong>Skills:</strong> ${skillsArray.join(', ')}</p>
+              <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+                <span class="status">Guardian: ${c.guardian_status}</span>
+                <a href="${c.source_url}" target="_blank" class="link">View Public Post &rarr;</a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error("Failed to load candidate feed:", err);
+        document.getElementById('candidate-feed').innerHTML = "<p style='color: #dc2626;'>Failed to load live feed from edge worker.</p>";
+      }
+    }
+    loadRemoteReferralFeed();
+    </script>
+</body>
+</html>
