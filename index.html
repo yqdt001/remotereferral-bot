@@ -12,6 +12,7 @@
         p.subtitle { color: #64748b; font-size: 16px; }
         .candidate-card { border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 16px; border-radius: 12px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .badge { font-size: 12px; font-weight: 600; background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 6px; }
+        .match-badge { font-size: 12px; font-weight: 700; background: #fef08a; color: #854d0e; padding: 4px 8px; border-radius: 6px; float: right; }
         .status { font-size: 12px; color: #16a34a; font-weight: 500; }
         a.link { font-size: 14px; color: #2563eb; text-decoration: none; font-weight: 500; }
         a.link:hover { text-decoration: underline; }
@@ -57,6 +58,7 @@
           return `
             <div class="candidate-card">
               <span class="badge">${c.region} - ${c.country}</span>
+              <span class="match-badge">⚡ Live Skill Match: High</span>
               <h3 style="margin-top: 12px; margin-bottom: 8px; color: #0f172a;">${c.role_sought || 'Remote Role'}</h3>
               <p style="font-size: 14px; color: #475569; margin: 4px 0;"><strong>Skills:</strong> ${skillsArray.join(', ')}</p>
               <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
